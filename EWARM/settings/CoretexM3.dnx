@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<settings>
+    <Stack>
+        <FillEnabled>0</FillEnabled>
+        <OverflowWarningsEnabled>1</OverflowWarningsEnabled>
+        <WarningThreshold>90</WarningThreshold>
+        <SpWarningsEnabled>1</SpWarningsEnabled>
+        <WarnLogOnly>1</WarnLogOnly>
+        <UseTrigger>1</UseTrigger>
+        <TriggerName>main</TriggerName>
+        <LimitSize>0</LimitSize>
+        <ByteLimit>50</ByteLimit>
+    </Stack>
+    <Trace1>
+        <Enabled>0</Enabled>
+        <ShowSource>1</ShowSource>
+    </Trace1>
+    <DebugChecksum>
+        <Checksum>3231354546</Checksum>
+    </DebugChecksum>
+    <CodeCoverage>
+        <Enabled>_ 0</Enabled>
+    </CodeCoverage>
+    <Disassembly>
+        <InstrCount>0</InstrCount>
+        <MixedMode>1</MixedMode>
+    </Disassembly>
+    <Exceptions>
+        <StopOnUncaught>_ 0</StopOnUncaught>
+        <StopOnThrow>_ 0</StopOnThrow>
+    </Exceptions>
+    <CallStack>
+        <ShowArgs>0</ShowArgs>
+    </CallStack>
+    <DriverProfiling>
+        <Enabled>0</Enabled>
+        <Mode>1</Mode>
+        <Graph>0</Graph>
+        <Symbiont>0</Symbiont>
+        <Exclusions />
+    </DriverProfiling>
+    <InterruptLog>
+        <LogEnabled>0</LogEnabled>
+        <GraphEnabled>0</GraphEnabled>
+        <ShowTimeLog>1</ShowTimeLog>
+        <SumEnabled>0</SumEnabled>
+        <ShowTimeSum>1</ShowTimeSum>
+        <SumSortOrder>0</SumSortOrder>
+    </InterruptLog>
+    <DataLog>
+        <LogEnabled>0</LogEnabled>
+        <GraphEnabled>0</GraphEnabled>
+        <ShowTimeLog>1</ShowTimeLog>
+        <SumEnabled>0</SumEnabled>
+        <ShowTimeSum>1</ShowTimeSum>
+    </DataLog>
+    <Interrupts>
+        <Enabled>1</Enabled>
+    </Interrupts>
+    <MemConfig>
+        <Base>1</Base>
+        <Manual>0</Manual>
+        <Ddf>1</Ddf>
+        <TypeViol>0</TypeViol>
+        <Stop>1</Stop>
+    </MemConfig>
+    <Simulator>
+        <Freq>10000000</Freq>
+        <FreqHi>0</FreqHi>
+        <MultiCoreRunAll>1</MultiCoreRunAll>
+    </Simulator>
+    <StLinkDriver>
+        <stlinkserialNo>25090387</stlinkserialNo>
+        <stlinkfoundProbes />
+        <stlinkResetStyle>0</stlinkResetStyle>
+        <stlinkResetStrategy>0</stlinkResetStrategy>
+        <CStepIntDis>_ 0</CStepIntDis>
+        <LeaveTargetRunning>_ 0</LeaveTargetRunning>
+    </StLinkDriver>
+    <struct_types>
+        <Fmt0>AppParam_t-factorySetCount	4	0</Fmt0>
+        <Fmt1>ArmLimit_t-bloodflow	3	0</Fmt1>
+        <Fmt2>ArmLimit_t-inletpress	3	0</Fmt2>
+        <Fmt3>BattPower_t-ac	3	0</Fmt3>
+        <Fmt4>BattPower_t-batt1	3	0</Fmt4>
+        <Fmt5>BattPower_t-batt2	3	0</Fmt5>
+        <Fmt6>PacketStr_t-Len	3	0</Fmt6>
+        <Fmt7>SystemState_t-BuzzerOff	3	0</Fmt7>
+        <Fmt8>SystemState_t-autorun	3	0</Fmt8>
+        <Fmt9>SystemState_t-emer	3	0</Fmt9>
+        <Fmt10>SystemState_t-primingmode	3	0</Fmt10>
+        <Fmt11>SystemState_t-startswon	3	0</Fmt11>
+        <Fmt12>SystemState_t-stop	3	0</Fmt12>
+    </struct_types>
+    <array_types>
+        <Fmt0>U8[2]	3	0</Fmt0>
+        <Fmt1>U8[4]	1	0</Fmt1>
+    </array_types>
+    <watch_formats>
+        <Fmt0>{W}1:AppData.IO.dword	4	0</Fmt0>
+        <Fmt1>{W}1:Cmd	1	0</Fmt1>
+        <Fmt2>{W}1:Cmd &amp; 0x80000000	1	0</Fmt2>
+        <Fmt3>{W}1:ConfirmNumber	4	0</Fmt3>
+        <Fmt4>{W}1:DacOut	1	0</Fmt4>
+        <Fmt5>{W}1:DacOut &amp; 0x80000000	1	0</Fmt5>
+        <Fmt6>{W}1:DataLength	3	0</Fmt6>
+        <Fmt7>{W}1:Exponential	4	0</Fmt7>
+        <Fmt8>{W}1:FloatPoint	4	0</Fmt8>
+        <Fmt9>{W}1:Len	3	0</Fmt9>
+        <Fmt10>{W}1:Length	3	0</Fmt10>
+        <Fmt11>{W}1:PckStr.Len	3	0</Fmt11>
+        <Fmt12>{W}1:RealData.blood	3	0</Fmt12>
+        <Fmt13>{W}1:SendData	4	0</Fmt13>
+        <Fmt14>{W}1:SeqCnt	4	0</Fmt14>
+        <Fmt15>{W}1:SetParaSize	3	0</Fmt15>
+        <Fmt16>{W}1:Sys.Delay[0]	3	0</Fmt16>
+        <Fmt17>{W}1:f	4	0</Fmt17>
+        <Fmt18>{W}1:fb	4	0</Fmt18>
+        <Fmt19>{W}1:fb &amp; 0x007FFFFF	4	0</Fmt19>
+        <Fmt20>{W}1:fb&amp;0x7fffff	4	0</Fmt20>
+        <Fmt21>{W}1:hexTemp	4	0</Fmt21>
+        <Fmt22>{W}1:i	3	0</Fmt22>
+        <Fmt23>{W}1:nTemp	4	0</Fmt23>
+        <Fmt24>{W}1:ret	3	0</Fmt24>
+        <Fmt25>{W}1:size	3	0</Fmt25>
+        <Fmt26>{W}1:val	3	0</Fmt26>
+        <Fmt27>{W}1:var.raw.exponent	4	0</Fmt27>
+        <Fmt28>{W}1:var.raw.mantissa	4	0</Fmt28>
+        <Fmt29>{W}42:PckStr.Len	3	0</Fmt29>
+        <Fmt30>{W}42:Sys.PumpCycState[2]	3	0</Fmt30>
+        <Fmt31>{W}42:Sys.g.stop	3	0</Fmt31>
+        <Fmt32>{W}42:rpmcnt	3	0</Fmt32>
+    </watch_formats>
+    <TermIOLog>
+        <LoggingEnabled>_ 0</LoggingEnabled>
+        <LogFile>_ ""</LogFile>
+    </TermIOLog>
+    <LogFile>
+        <LoggingEnabled>_ 0</LoggingEnabled>
+        <LogFile>_ ""</LogFile>
+        <Category>_ 0</Category>
+    </LogFile>
+    <CallStackLog>
+        <Enabled>0</Enabled>
+    </CallStackLog>
+    <CallStackStripe>
+        <ShowTiming>1</ShowTiming>
+    </CallStackStripe>
+    <DisassembleMode>
+        <mode>0</mode>
+    </DisassembleMode>
+    <Breakpoints2>
+        <Bp0>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\App\Data\AppParam.c}.115.1" 0 0 1 "" 0 "" 0</Bp0>
+        <Bp1>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Drivers\BSP\ITIMER.c}.57.13" 0 0 1 "" 0 "" 0</Bp1>
+        <Bp2>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\App\Data}.83.1" 0 0 1 "" 0 "" 0</Bp2>
+        <Bp3>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\App\Data}.91.5" 0 0 1 "" 0 "" 0</Bp3>
+        <Bp4>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\App\Data}.92.5" 0 0 1 "" 0 "" 0</Bp4>
+        <Bp5>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\..\..\..\ECMO\App\Task\SerialComm\SerialComm.c}.72.21" 0 0 1 "" 0 "" 0</Bp5>
+        <Bp6>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\..\..\..\ECMO\App\Task\SerialComm\SerialComm.c}.0.1" 0 0 1 "" 0 "" 0</Bp6>
+        <Bp7>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\..\..\..\ECMO\App\Task\SerialComm\SerialComm.c}.0.1" 0 0 1 "" 0 "" 0</Bp7>
+        <Bp8>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\..\..\..\ECMO\App\Task\SerialComm\SerialComm.c}.0.1" 0 0 1 "" 0 "" 0</Bp8>
+        <Bp9>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\..\..\..\ECMO\App\Task\SerialComm\SerialComm.c}.56.9" 0 0 1 "" 0 "" 0</Bp9>
+        <Bp10>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Drivers\BSP\IUART.c}.696.5" 0 0 1 "" 0 "" 0</Bp10>
+        <Bp11>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\App\Task\SerialComm\SerialComm.c}.311.1" 0 0 1 "" 0 "" 0</Bp11>
+        <Count>12</Count>
+    </Breakpoints2>
+    <Aliases>
+        <A0>_ "D:\Work\2. ECMO\Firmware\ECMO_LCD_interface_20231115\Middlewares\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.c" ""</A0>
+        <A1>_ "D:\Work\2. ECMO\Firmware\ECMO_LCD_interface_20231203\App\Base\main.c" "D:\Work\ECMO\Firmware\ECMO_CONTROLLER\App\Base\main.c"</A1>
+        <A2>_ "D:\Work\2. ECMO\Firmware\ECMO_LCD_interface_20231203\App\Task\TaskInit.c" ""</A2>
+        <A3>_ "D:\Work\2. ECMO\Firmware\ECMO_LCD_interface_20231203\Drivers\BSP\Buzzer.c" ""</A3>
+        <A4>_ "D:\Work\2. ECMO\Firmware\ECMO_LCD_interface_20231203\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal.c" ""</A4>
+        <A5>_ "D:\Work\2. ECMO\Firmware\ECMO_LCD_interface_20231203\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_gpio.c" ""</A5>
+        <A6>_ "D:\Work\2. ECMO\Firmware\ECMO_LCD_interface_20231203\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_spi_ex.c" ""</A6>
+        <A7>_ "D:\Work\ECMO\Firmware\ECMO_CONTROLLER\App\Base\main.c" "D:\Work\2. ECMO\Firmware\ECMO_CONTROLLER\App\Base\main.c"</A7>
+        <Count>8</Count>
+        <SuppressDialog>0</SuppressDialog>
+    </Aliases>
+</settings>

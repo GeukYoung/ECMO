@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<userOverrides>
+    <override>
+        <path>D:\Work\2. ECMO\Firmware\Controller\trunk\App\Task\Control\Seq.c</path>
+        <encoding>System</encoding>
+    </override>
+    <override>
+        <path>D:\Work\2. ECMO\Firmware\Controller\trunk\App\Task\SerialComm\SerialCommTask.c</path>
+        <encoding>System</encoding>
+    </override>
+    <override>
+        <path>D:\Work\2. ECMO\Firmware\ECMO_CONTROLLER\App\Task\Control\Seq.c</path>
+        <encoding>System</encoding>
+    </override>
+    <override>
+        <path>D:\Work\2. ECMO\Firmware\ECMO_CONTROLLER\App\Task\SerialComm\SerialCommTask.c</path>
+        <encoding>System</encoding>
+    </override>
+    <override>
+        <path>D:\Work\2. ECMO\Firmware\ECMO_LCD_interface_20231115\App\Task\Control\ControlTask.c</path>
+        <encoding>System</encoding>
+    </override>
+    <override>
+        <path>D:\Work\2. ECMO\Firmware\ECMO_LCD_interface_20231115\App\Task\Control\Seq.c</path>
+        <encoding>System</encoding>
+    </override>
+    <override>
+        <path>D:\Work\2. ECMO\Firmware\ECMO_LCD_interface_20231115\App\Task\SerialComm\SerialCommTask.c</path>
+        <encoding>System</encoding>
+    </override>
+    <override>
+        <path>D:\Work\2. ECMO\Firmware\ECMO_LCD_interface_20231203\App\Task\Control\Seq.c</path>
+        <encoding>System</encoding>
+    </override>
+    <override>
+        <path>D:\Work\2. ECMO\Firmware\ECMO_LCD_interface_20231203\App\Task\SerialComm\SerialCommTask.c</path>
+        <encoding>System</encoding>
+    </override>
+    <override>
+        <path>D:\Work\ECMO\Firmware\ECMO_CONTROLLER\App\Task\Control\Seq.c</path>
+        <encoding>System</encoding>
+    </override>
+    <override>
+        <path>D:\Work\ECMO\Firmware\ECMO_CONTROLLER\App\Task\SerialComm\SerialCommTask.c</path>
+        <encoding>System</encoding>
+    </override>
+</userOverrides>
