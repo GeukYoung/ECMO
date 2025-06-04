@@ -369,10 +369,9 @@ U16 PumpPhase = 0;
 
 void PumpCycle(void)
 {
-    Sys.RealBPSTime++;  
     PumpPhase = Sys.CalcBPS / 2;
-    // PumpPhase = 1;
-      
+    // PumpPhase = 0;
+    
     if(Sys.g.bfirststart)
       return;
     
@@ -407,8 +406,8 @@ void PumpCycle(void)
 
             if(Sys.Delay_P1++ >= 5)      // scan time = 2ms * 5cnt = 10ms
             {
-                PumpCycleTime = HAL_GetTick() - PumpTick;
-                PumpTick = HAL_GetTick();              
+                // PumpCycleTime = HAL_GetTick() - PumpTick;
+                // PumpTick = HAL_GetTick();              
                 Sys.Delay_P1 = 0;
                 Sys.Pump1CycState = P1_CYC_STEP2;
             }
@@ -420,7 +419,7 @@ void PumpCycle(void)
               P1_Step2();
               
               U16 EjectTime = (U16)(SetParam.val.ejection / (SCAN_TIME * 10));   // eeprom에 x10 정수형으로 저장되어있음.,
-              if(Sys.Delay_P1++ >= EjectTime)
+              if(Sys.Delay_P1++ >= EjectTime+100)
               {
                   Sys.Delay_P1 = 0;
                   Sys.Pump1CycState = P1_CYC_STEP3;
@@ -482,7 +481,7 @@ void PumpCycle(void)
               P1_Step7();
 
               Sys.Delay_P1 = 0;
-              Sys.Pump1CycState = 0;
+              Sys.Pump1CycState = ALL_CYC_END;
           }
         break;
     }
@@ -494,8 +493,8 @@ void PumpCycle(void)
             P2_Step1();
             if(Sys.Delay_P2++ >= 5)      // scan time = 2ms * 5cnt = 10ms
             {
-                PumpCycleTime = HAL_GetTick() - PumpTick;
-                PumpTick = HAL_GetTick();              
+                // PumpCycleTime = HAL_GetTick() - PumpTick;
+                // PumpTick = HAL_GetTick();              
                 Sys.Delay_P2 = 0;
                 Sys.Pump2CycState = P2_CYC_STEP2;
             }
@@ -507,7 +506,7 @@ void PumpCycle(void)
               P2_Step2();
               
               U16 EjectTime = (U16)(SetParam.val.ejection / (SCAN_TIME * 10));   // eeprom에 x10 정수형으로 저장되어있음.,
-              if(Sys.Delay_P2++ >= EjectTime)
+              if(Sys.Delay_P2++ >= EjectTime+100)
               {
                   Sys.Delay_P2 = 0;
                   Sys.Pump2CycState = P2_CYC_STEP3;
@@ -569,11 +568,12 @@ void PumpCycle(void)
               P2_Step7();
 
               Sys.Delay_P2 = 0;
-              Sys.Pump2CycState = 0;
+              Sys.Pump2CycState = ALL_CYC_END;
           }
         break;
     }
-
+    
+    Sys.RealBPSTime++;  
     if(Sys.RealBPSTime >= Sys.CalcBPS) // 1 cycle 종료
     {
       float fVal = (float)((60000. / (float)(Sys.RealBPSTime * SCAN_TIME)) + 0.2);
@@ -690,6 +690,7 @@ void Stop(void)
         break;
       Sys.StopTimerCnt = 0;
       Sys.g.stop = true;
+      Sys.g.stopswon = true;
       Sys.StopCycState = SW_C_END;
       break;
     
@@ -708,7 +709,7 @@ void Seq(void)
     
     // monitoring to push button state 
     Sys.g.startswon = Start_On();
-    Sys.g.stopswon  = Stop_On();
+    // Sys.g.stopswon  = Stop_On();
     
     Sys.Err.bit.emeron = Sys.g.emer = Emer_On();
     //Sys.g.stop = !Sys.g.startswon || Sys.g.emer || Sys.Err.bit.starton;
@@ -729,8 +730,8 @@ void Seq(void)
     else
       Sys.Err.bit.disconnectflow = false;
     
-    Sys.g.cyclerun =  (Sys.Pump1CycState >= P1_CYC_STEP1) && (Sys.Pump1CycState <= ALL_CYC_END);
-
+    // Sys.g.cyclerun =  (Sys.Pump1CycState >= P1_CYC_STEP1) && (Sys.Pump1CycState <= ALL_CYC_END);
+    Sys.g.cyclerun =  (Sys.Pump1CycState == ALL_CYC_END) && (Sys.Pump2CycState == ALL_CYC_END);
 
     // Start, Stop button 2024.06.18
     if(Sys.g.startswon)
