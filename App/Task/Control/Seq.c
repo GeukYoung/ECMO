@@ -365,273 +365,226 @@ void P2_Step7(void)
 #define SCAN_TIME       2       // 2ms
 U32 PumpCycleTime = 0;
 U32 PumpTick = 0;
+U16 PumpPhase = 0;
+
 void PumpCycle(void)
 {
-    if(Sys.PumpCycState >= P1_CYC_STEP1 && Sys.PumpCycState <= ALL_CYC_END)
-      Sys.RealBPSTime++;  
-    
-    //LED_Toggle(STATUS0);  
-    // bfirststart : Pump Run after 1.5s and then Cycle Run after 0.5s
-    // totally Cycle Run after 2sec
+    Sys.RealBPSTime++;  
+    PumpPhase = Sys.CalcBPS / 2
+
     if(Sys.g.bfirststart)
       return;
     
-    switch(Sys.PumpCycState)
+    if(Global.bFirstFullTempBuf == false)
     {
-      
-    // PUMP2 CYCLE
-    case P1_CYC_STEP1:
+        Global.TempFlowBufCnt++;  
+        if(Global.TempFlowBufCnt > 8)
         {
-            Sys.Delay++;
+            Global.bFirstFullTempBuf = true;
+            Global.TempFlowBufCnt = 0;
             
-            // fill flowlowdata in Tempflow buf. after cycle excute 5times
-            if(Global.bFirstFullTempBuf == false)
-            {
-                Global.TempFlowBufCnt++;  
-                if(Global.TempFlowBufCnt > 8)
-                {
-                    Global.bFirstFullTempBuf = true;
-                    Global.TempFlowBufCnt = 0;
-                    
-                    for(int i = 0; i < 40; i++)
-                        Global.TempFlow[i] = FlowVal.flowlowval;
-                }
-            }
-            
+            for(int i = 0; i < 40; i++)
+                Global.TempFlow[i] = FlowVal.flowlowval;
+        }
+    }
+
+    if(Sys.RealBPSTime == 1) // Pump1 Cycle Start
+    {
+      Sys.Pump1CycState = P1_CYC_STEP1;  
+    }
+
+    if(Sys.RealBPSTime >= PumpPhase) // Pump2 Cycle Start
+    {
+      Sys.Pump2CycState = P2_CYC_STEP1;
+    }
+
+    switch(Sys.Pump1CycState)
+    {
+      case P1_CYC_STEP1:
+          {
             P1_Step1();
 
-            if(Sys.Delay >= 5)      // scan time = 2ms * 5cnt = 10ms
+            if(Sys.Delay_P1++ >= 5)      // scan time = 2ms * 5cnt = 10ms
             {
                 PumpCycleTime = HAL_GetTick() - PumpTick;
                 PumpTick = HAL_GetTick();              
-                Sys.Delay = 0;
-                Sys.PumpCycState = P1_CYC_STEP2;
+                Sys.Delay_P1 = 0;
+                Sys.Pump1CycState = P1_CYC_STEP2;
             }
-        }      
-      break;
-      
-    case P1_CYC_STEP2:
-        {
-            Sys.Delay++;
+          }
+        break;
 
-            P1_Step2();
-          
-            U16 EjectTime = (U16)(SetParam.val.ejection / (SCAN_TIME * 10));   // eeprom에 x10 정수형으로 저장되어있음.,
-            if(Sys.Delay >= EjectTime)
-            {
-                Sys.Delay = 0;
-                Sys.PumpCycState = P1_CYC_STEP3;
-            }
-        }      
-      break;      
+      case P1_CYC_STEP2:
+          {
+              P1_Step2();
+              
+              U16 EjectTime = (U16)(SetParam.val.ejection / (SCAN_TIME * 10));   // eeprom에 x10 정수형으로 저장되어있음.,
+              if(Sys.Delay_P1++ >= EjectTime)
+              {
+                  Sys.Delay_P1 = 0;
+                  Sys.Pump1CycState = P1_CYC_STEP3;
+              }
+          }
+        break;
 
-    case P1_CYC_STEP3:
-        {
-            Sys.Delay++;
+      case P1_CYC_STEP3:
+          {
+              P1_Step3();
 
-            P1_Step3();
+              U16 DelayTime = (U16)(SetParam.val.delay / (SCAN_TIME * 10));       // eeprom에 x10 정수형으로 저장되어있음.,
+              if(Sys.Delay_P1++ >= DelayTime)
+              {
+                  Sys.Delay_P1 = 0;
+                  Sys.Pump1CycState = P1_CYC_STEP4;
+              }
+          }
+        break;
 
-            U16 DelayTime = (U16)(SetParam.val.delay / (SCAN_TIME * 10));       // eeprom에 x10 정수형으로 저장되어있음.,
-            if(Sys.Delay >= DelayTime)
-            {
-                Sys.Delay = 0;
-                Sys.PumpCycState = P1_CYC_STEP4;
-            }
-        }      
-      break;
+      case P1_CYC_STEP4:
+          {
+              P1_Step4();
 
-    case P1_CYC_STEP4:
-        {
-            Sys.Delay++;
+              if(Sys.Delay_P1++ >= 5)     // hold for 10ms
+              {
+                  Sys.Delay_P1 = 0;
+                  Sys.Pump1CycState = P1_CYC_STEP5;
+              }
+          }
+        break;
 
-            P1_Step4();
+      case P1_CYC_STEP5:
+          {
+              P1_Step5();
 
-            if(Sys.Delay >= 5)     // hold for 10ms
-            {
-                Sys.Delay = 0;
-                Sys.PumpCycState = P1_CYC_STEP5;
-            }
-        }      
-      break;
+              if(Sys.Delay_P1++ >= 5)     // hold for 10ms
+              {
+                  Sys.Delay_P1 = 0;
+                  Sys.Pump1CycState = P1_CYC_STEP6;
+              }
+          }
+        break;
 
-    case P1_CYC_STEP5:
-        {
-            Sys.Delay++;
+      case P1_CYC_STEP6:
+          {
+              P1_Step6();
 
-            P1_Step5();
+              if(Sys.Delay_P1++ >= 15)     // hold for 30ms
+              {
+                  Sys.Delay_P1 = 0;
+                  Sys.Pump1CycState = P1_CYC_STEP7;
+              }
+          }
+        break;
 
-            if(Sys.Delay >= 5)     // hold for 10ms
-            {
-                Sys.Delay = 0;
-                Sys.PumpCycState = P1_CYC_STEP6;
-            }
-        }      
-      break;
+      case P1_CYC_STEP7:
+          {
+              P1_Step7();
 
-    case P1_CYC_STEP6:
-        {
-            Sys.Delay++;
+              Sys.Delay_P1 = 0;
+              Sys.Pump1CycState = 0;
+          }
+        break;
+    }
 
-            P1_Step6();
-
-            if(Sys.Delay >= 15)     // hold for 30ms
-            {
-                Sys.Delay = 0;
-                Sys.PumpCycState = P1_CYC_STEP7;
-            }
-        }      
-      break;
-
-    case P1_CYC_STEP7:
-        {
-            Sys.Delay++;
-
-            P1_Step7();
-
-            U16 EjectTime = (U16)(SetParam.val.ejection / 10);
-            U16 DelayTime = (U16)(SetParam.val.delay / 10);
-            
-            // 10ms[STEP1] + EjectTime[STEP2] +DelayTime[STEP3] + 10ms[STEP4] + 10ms[STEP5] + 30ms[STEP6]
-            U16 TimeTotal = EjectTime + DelayTime + 60;
-            U16 BPSTime = (U16)(Sys.CalcBPS);
-            U16 HoldTime = (U16)((BPSTime - TimeTotal) / SCAN_TIME);
-            
-            if(Sys.Delay >= HoldTime)     // hold for remain time[calc bps]
-            {
-                Sys.Delay = 0;
-                Sys.PumpCycState = P2_CYC_STEP1;
-            }
-        }      
-      break;
-
-      
-    // PUMP2 CYCLE  
-    case P2_CYC_STEP1:
-        {
-            Sys.Delay++;
-
+    switch(Sys.Pump2CycState)
+    {
+      case P2_CYC_STEP1:
+          {
             P2_Step1();
-
-            if(Sys.Delay >= 5)      // scan time = 2ms * 5cnt = 10ms
+            if(Sys.Delay_P2++ >= 5)      // scan time = 2ms * 5cnt = 10ms
             {
-                Sys.Delay = 0;
-                Sys.PumpCycState = P2_CYC_STEP2;
-            }          
-        }      
-      break;      
-
-    case P2_CYC_STEP2:
-        {
-            Sys.Delay++;
-
-            P2_Step2(); 
-
-            U16 EjectTime = (U16)(SetParam.val.ejection / (SCAN_TIME * 10));   // eeprom에 x10 정수형으로 저장되어있음.,
-            if(Sys.Delay >= EjectTime)
-            {
-                Sys.Delay = 0;
-                Sys.PumpCycState = P2_CYC_STEP3;
+                PumpCycleTime = HAL_GetTick() - PumpTick;
+                PumpTick = HAL_GetTick();              
+                Sys.Delay_P2 = 0;
+                Sys.Pump2CycState = P2_CYC_STEP2;
             }
-        }      
-      break;      
+          }
+        break;
 
-    case P2_CYC_STEP3:
-        {
-            Sys.Delay++;
+      case P2_CYC_STEP2:
+          {
+              P2_Step2();
+              
+              U16 EjectTime = (U16)(SetParam.val.ejection / (SCAN_TIME * 10));   // eeprom에 x10 정수형으로 저장되어있음.,
+              if(Sys.Delay_P2++ >= EjectTime)
+              {
+                  Sys.Delay_P2 = 0;
+                  Sys.Pump2CycState = P2_CYC_STEP3;
+              }
+          }
+        break;
 
-            P2_Step3();                 
+      case P2_CYC_STEP3:
+          {
+              P2_Step3();
 
-            U16 DelayTime = (U16)(SetParam.val.delay / (SCAN_TIME * 10));       // eeprom에 x10 정수형으로 저장되어있음.,
-            if(Sys.Delay >= DelayTime)    
-            {
-                Sys.Delay = 0;
-                Sys.PumpCycState = P2_CYC_STEP4;
-            }
-        }      
-      break;      
+              U16 DelayTime = (U16)(SetParam.val.delay / (SCAN_TIME * 10));       // eeprom에 x10 정수형으로 저장되어있음.,
+              if(Sys.Delay_P2++ >= DelayTime)
+              {
+                  Sys.Delay_P2 = 0;
+                  Sys.Pump2CycState = P2_CYC_STEP4;
+              }
+          }
+        break;
 
-    case P2_CYC_STEP4:
-        {
-            Sys.Delay++;
+      case P2_CYC_STEP4:
+          {
+              P2_Step4();
 
-            P2_Step4();         
+              if(Sys.Delay_P2++ >= 5)     // hold for 10ms
+              {
+                  Sys.Delay_P2 = 0;
+                  Sys.Pump2CycState = P2_CYC_STEP5;
+              }
+          }
+        break;
 
-            if(Sys.Delay >= 5)     // hold for 10ms
-            {
-                Sys.Delay = 0;
-                Sys.PumpCycState = P2_CYC_STEP5;
-            }
-        }      
-      break;            
-      
-    case P2_CYC_STEP5:
-        {
-            Sys.Delay++;
-            
-            P2_Step5();         
+      case P2_CYC_STEP5:
+          {
+              P2_Step5();
 
-            if(Sys.Delay >= 5)     // hold for 10ms
-            {
-                Sys.Delay = 0;
-                Sys.PumpCycState = P2_CYC_STEP6;
-            }
-        }
-      
-      break;      
+              if(Sys.Delay_P2++ >= 5)     // hold for 10ms
+              {
+                  Sys.Delay_P2 = 0;
+                  Sys.Pump2CycState = P2_CYC_STEP6;
+              }
+          }
+        break;
 
-    case P2_CYC_STEP6:
-        {
-            Sys.Delay++;
+      case P2_CYC_STEP6:
+          {
+              P2_Step6();
 
-            P2_Step6();        
+              if(Sys.Delay_P2++ >= 15)     // hold for 30ms
+              {
+                  Sys.Delay_P2 = 0;
+                  Sys.Pump2CycState = P2_CYC_STEP7;
+              }
+          }
+        break;
 
-            if(Sys.Delay >= 15)     // hold for 30ms
-            {
-                Sys.Delay = 0;
-                Sys.PumpCycState = P2_CYC_STEP7; 
-            }
-        }      
-      break;      
+      case P2_CYC_STEP7:
+          {
+              P2_Step7();
 
-    case P2_CYC_STEP7:
-        {
-            Sys.Delay++;
+              Sys.Delay_P2 = 0;
+              Sys.Pump2CycState = 0;
+          }
+        break;
+    }
 
-            P2_Step7();
-          
-            U16 EjectTime = (U16)(SetParam.val.ejection / 10);
-            U16 DelayTime = (U16)(SetParam.val.delay / 10);
-            
-             // 10ms[STEP1] + EjectTime[STEP2] + DelayTime[STEP3] + 10ms[STEP4] + 10ms[STEP5] + 30ms[STEP6]
-            U16 TimeTotal = EjectTime + DelayTime + 60;
-            U16 BPSTime = (U16)(Sys.CalcBPS);
-            U16 HoldTime = (U16)((BPSTime - TimeTotal) / SCAN_TIME);
-            
-            if(Sys.Delay >= HoldTime)     // hold for remain time[calc bps]
-            {
-                Sys.Delay = 0;
-                Sys.PumpCycState = ALL_CYC_END;
-            }          
-        }      
-      break;   
-      
-
-    case ALL_CYC_END:
-      {
-          float fVal = (float)((60000. / (float)(Sys.RealBPSTime * SCAN_TIME)) + 0.2);
-          RealData.bpm = (U16)(fVal * 2);
-          Sys.RealBPSTime = 0;
-          Sys.PumpCycState = 0;
-      }
-      break;                  
-      
+    if(Sys.RealBPSTime >= Sys.CalcBPS) // 1 cycle 종료
+    {
+      float fVal = (float)((60000. / (float)(Sys.RealBPSTime * SCAN_TIME)) + 0.2);
+      RealData.bpm = (U16)(fVal * 2);
+      Sys.RealBPSTime = 0;
     }
 }
 
 U16 FirstStartDelay = 0;// Pump Run after 1.5s and then Cycle Run after 0.5s
 void SysAuto(void)
 {
-    if(Sys.g.bfirststart && Sys.PumpCycState == P1_CYC_STEP1)
+    if(Sys.g.bfirststart && Sys.Pump1CycState == P1_CYC_STEP1)
     {
         FirstStartDelay++;
         if(FirstStartDelay > 750)
@@ -651,11 +604,11 @@ void SysAuto(void)
         if(bAutoCondition)
         {
             U16 SetBPM = (U16)(SetParam.val.bpm / 10);
-            Sys.CalcBPS = (U16)(60000 / SetBPM);            // SetParam에 x 10하여 정수형으로 eeprom에 저장되엇음.
-            
+            Sys.CalcBPS = (U16)(60000 / SetBPM * 2);            // SetParam에 x 10하여 정수형으로 eeprom에 저장되엇음.
+                                              // seq 구조 변경에 의한 x2 추가 by JG
             if(!Sys.g.cyclerun)
             {
-                Sys.PumpCycState = P1_CYC_STEP1;
+                Sys.Pump1CycState = P1_CYC_STEP1;
 
                 SetVentFlow(MAIN_PUMP1, 110);       // max. 11 LPM 
                 SetVentFlow(MAIN_PUMP2, 110);       // max. 11 LPM
@@ -777,7 +730,7 @@ void Seq(void)
     else
       Sys.Err.bit.disconnectflow = false;
     
-    Sys.g.cyclerun =  (Sys.PumpCycState >= P1_CYC_STEP1) && (Sys.PumpCycState <= ALL_CYC_END);
+    Sys.g.cyclerun =  (Sys.Pump1CycState >= P1_CYC_STEP1) && (Sys.Pump1CycState <= ALL_CYC_END);
 
 
     // Start, Stop button 2024.06.18

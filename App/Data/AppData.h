@@ -165,8 +165,10 @@ typedef struct DeviceState_t
     SysError_t  Err;
     
     // Cycle Run
-    U8 PumpCycState;
-    U16 Delay;
+    U8 Pump1CycState;
+    U8 Pump2CycState;
+    U16 Delay_P1;
+    U16 Delay_P2;
     
     U16 RealBPSTime;
     U16 CalcBPS;

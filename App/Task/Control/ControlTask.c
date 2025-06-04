@@ -61,7 +61,8 @@ static void ControlTask(void const * argument)  // 2msec
                     ADOffset.mainreg = 200;       //ADC108S022_GetData(ADC_CH1);
                     ADOffset.InletPress = 200;    //ADC108S022_GetData(ADC_CH2);
                     
-                    Sys.PumpCycState = 0;
+                    Sys.Pump1CycState = 0;
+                    Sys.Pump2CycState = 0;
                     AppData.IO.bit.LCDPWR = true;
                     AppData.IO.bit.BLED = false;
                     AppData.IO.bit.GLED = false;
