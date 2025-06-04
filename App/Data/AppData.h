@@ -84,6 +84,7 @@ typedef union IO_Data_t
     
     U32         BUZZER    : 1;
     U32         RLED      : 1;    // YLED
+    
     U32         BLED      : 1;    // 
     U32         LCDPWR    : 1;    // Clear Display Power
     U32         GLED      : 1;    // FAN1
@@ -126,7 +127,7 @@ typedef union SystemError_t
       U8   bloodflow       : 1;
       U8   lowbatt         : 1;
       U8   bubble          : 1;
-      U8   reserved7       : 1;
+      U8   disconnectflow  : 1; // SONOFlow disconnect error 2024.07.07
     }bit;
     
     U8 Error;
@@ -138,9 +139,10 @@ typedef struct SystemState_t
   U16 autorun    :1;
   U16 stop       :1;
   U16 emer       :1;
-  U16 startswon  :1;
   
-  U16 reserved04 :1;
+  U16 startswon  :1;
+  U16 stopswon   :1;
+  
   U16 reserved05 :1;
   U16 BuzzerOff  :1;
   U16 primingmode:1;     // mode set, alarm disable without Start error & Emergency error
@@ -170,6 +172,14 @@ typedef struct DeviceState_t
     U16 CalcBPS;
     
     U16 UpdateLogPeriod;
+    
+    // Start,Stop Button Cycle Run
+    U8 StartCycState;
+    U8 StartTimerCnt;
+    
+    U8 StopCycState;
+    U8 StopTimerCnt;
+    
 }SysState_t;
 
 typedef struct PumpRPM_t
@@ -247,6 +257,7 @@ typedef struct GlobalVariable_t
     float   TempFlow[60];         // average for 1min
     float   TempFlowBufCnt;       // Buf save count
     BOOL    bFirstFullTempBuf;    // only one excute as cycle start.
+    U8      FlowSenCommCnt;       // Monitor Rs485 Comm. Count[Connect or not]
 }Global_t;
 
 #pragma pack(pop)
