@@ -138,6 +138,230 @@ void ReadWrite(void)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Pump1 Cycle Step[1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7] -> Pump2 Cycle Step[1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7]
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void P1_Step1(void)
+{
+    // IN
+  AppData.IO.bit.P1InA     = true;
+  AppData.IO.bit.P1InP     = true;
+  // OUT
+  AppData.IO.bit.P1OutA    = false;
+  AppData.IO.bit.P1OutP    = true;
+  // MAIN
+  AppData.IO.bit.P1SacA1   = false;
+  AppData.IO.bit.P1SacA2   = false;
+  AppData.IO.bit.P1SacP1   = false;
+  AppData.IO.bit.P1SacP2   = false;
+  AppData.IO.bit.P1SacP3   = false;
+}
+
+void P1_Step2(void)
+{
+  // IN
+  AppData.IO.bit.P1InA     = true;
+  AppData.IO.bit.P1InP     = true;
+  // OUT
+  AppData.IO.bit.P1OutA    = false;
+  AppData.IO.bit.P1OutP    = true;
+  // MAIN
+  AppData.IO.bit.P1SacA1   = true;
+  AppData.IO.bit.P1SacA2   = true;
+  AppData.IO.bit.P1SacP1   = true;
+  AppData.IO.bit.P1SacP2   = true;
+  AppData.IO.bit.P1SacP3   = true;   
+}
+
+void P1_Step3(void)
+{
+  // IN
+  AppData.IO.bit.P1InA     = true;
+  AppData.IO.bit.P1InP     = true;
+  // OUT
+  AppData.IO.bit.P1OutA    = false;
+  AppData.IO.bit.P1OutP    = true;
+  // MAIN
+  AppData.IO.bit.P1SacA1   = false;
+  AppData.IO.bit.P1SacA2   = false;
+  AppData.IO.bit.P1SacP1   = true;
+  AppData.IO.bit.P1SacP2   = true;
+  AppData.IO.bit.P1SacP3   = true;   
+}
+
+void P1_Step4(void)
+{
+  // IN
+  AppData.IO.bit.P1InA     = false;
+  AppData.IO.bit.P1InP     = true;
+  // OUT
+  AppData.IO.bit.P1OutA    = false;
+  AppData.IO.bit.P1OutP    = false;
+  // MAIN
+  AppData.IO.bit.P1SacA1   = false;
+  AppData.IO.bit.P1SacA2   = false;
+  AppData.IO.bit.P1SacP1   = true;
+  AppData.IO.bit.P1SacP2   = true;
+  AppData.IO.bit.P1SacP3   = true;   
+}
+
+void P1_Step5(void)
+{
+  // IN
+  AppData.IO.bit.P1InA     = false;
+  AppData.IO.bit.P1InP     = true;
+  // OUT
+  AppData.IO.bit.P1OutA    = true;
+  AppData.IO.bit.P1OutP    = false;
+  // MAIN
+  AppData.IO.bit.P1SacA1   = false;
+  AppData.IO.bit.P1SacA2   = false;
+  AppData.IO.bit.P1SacP1   = true;
+  AppData.IO.bit.P1SacP2   = true;
+  AppData.IO.bit.P1SacP3   = true;   
+}
+
+void P1_Step6(void)
+{
+  // IN
+  AppData.IO.bit.P1InA     = false;
+  AppData.IO.bit.P1InP     = true;
+  // OUT
+  AppData.IO.bit.P1OutA    = true;
+  AppData.IO.bit.P1OutP    = false;
+  // MAIN
+  AppData.IO.bit.P1SacA1   = false;
+  AppData.IO.bit.P1SacA2   = false;
+  AppData.IO.bit.P1SacP1   = false;
+  AppData.IO.bit.P1SacP2   = false;
+  AppData.IO.bit.P1SacP3   = false;  
+}
+
+void P1_Step7(void)
+{
+  // IN
+  AppData.IO.bit.P1InA     = false;
+  AppData.IO.bit.P1InP     = false;
+  // OUT
+  AppData.IO.bit.P1OutA    = false;
+  AppData.IO.bit.P1OutP    = false;
+  // MAIN
+  AppData.IO.bit.P1SacA1   = false;
+  AppData.IO.bit.P1SacA2   = false;
+  AppData.IO.bit.P1SacP1   = false;
+  AppData.IO.bit.P1SacP2   = false;
+  AppData.IO.bit.P1SacP3   = false;  
+}
+
+void P2_Step1(void)
+{
+  // IN
+  AppData.IO.bit.P2InA     = true;
+  AppData.IO.bit.P2InP     = true;
+  // OUT
+  AppData.IO.bit.P2OutA    = false;
+  AppData.IO.bit.P2OutP    = true;
+  // MAIN
+  AppData.IO.bit.P2SacA1   = false;
+  AppData.IO.bit.P2SacA2   = false;
+  AppData.IO.bit.P2SacP1   = false;
+  AppData.IO.bit.P2SacP2   = false;
+  AppData.IO.bit.P2SacP3   = false;
+}
+
+void P2_Step2(void)
+{
+  // IN
+  AppData.IO.bit.P2InA     = true;
+  AppData.IO.bit.P2InP     = true;
+  // OUT
+  AppData.IO.bit.P2OutA    = false;
+  AppData.IO.bit.P2OutP    = true;
+  // MAIN
+  AppData.IO.bit.P2SacA1   = true;
+  AppData.IO.bit.P2SacA2   = true;
+  AppData.IO.bit.P2SacP1   = true;
+  AppData.IO.bit.P2SacP2   = true;
+  AppData.IO.bit.P2SacP3   = true;   
+}
+
+void P2_Step3(void)
+{
+  // IN
+  AppData.IO.bit.P2InA     = true;
+  AppData.IO.bit.P2InP     = true;
+  // OUT
+  AppData.IO.bit.P2OutA    = false;
+  AppData.IO.bit.P2OutP    = true;
+  // MAIN
+  AppData.IO.bit.P2SacA1   = false;
+  AppData.IO.bit.P2SacA2   = false;
+  AppData.IO.bit.P2SacP1   = true;
+  AppData.IO.bit.P2SacP2   = true;
+  AppData.IO.bit.P2SacP3   = true;   
+}
+
+void P2_Step4(void)
+{
+  // IN
+  AppData.IO.bit.P2InA     = false;
+  AppData.IO.bit.P2InP     = true;
+  // OUT
+  AppData.IO.bit.P2OutA    = false;
+  AppData.IO.bit.P2OutP    = false;
+  // MAIN
+  AppData.IO.bit.P2SacA1   = false;
+  AppData.IO.bit.P2SacA2   = false;
+  AppData.IO.bit.P2SacP1   = true;
+  AppData.IO.bit.P2SacP2   = true;
+  AppData.IO.bit.P2SacP3   = true;   
+}
+
+void P2_Step5(void)
+{
+  // IN
+  AppData.IO.bit.P2InA     = false;
+  AppData.IO.bit.P2InP     = true;
+  // OUT
+  AppData.IO.bit.P2OutA    = true;
+  AppData.IO.bit.P2OutP    = false;
+  // MAIN
+  AppData.IO.bit.P2SacA1   = false;
+  AppData.IO.bit.P2SacA2   = false;
+  AppData.IO.bit.P2SacP1   = true;
+  AppData.IO.bit.P2SacP2   = true;
+  AppData.IO.bit.P2SacP3   = true;   
+}
+
+void P2_Step6(void)
+{
+  // IN
+  AppData.IO.bit.P2InA     = false;
+  AppData.IO.bit.P2InP     = true;
+  // OUT
+  AppData.IO.bit.P2OutA    = true;
+  AppData.IO.bit.P2OutP    = false;
+  // MAIN
+  AppData.IO.bit.P2SacA1   = false;
+  AppData.IO.bit.P2SacA2   = false;
+  AppData.IO.bit.P2SacP1   = false;
+  AppData.IO.bit.P2SacP2   = false;
+  AppData.IO.bit.P2SacP3   = false;  
+}
+
+void P2_Step7(void)
+{
+  // IN
+  AppData.IO.bit.P2InA     = false;
+  AppData.IO.bit.P2InP     = false;
+  // OUT
+  AppData.IO.bit.P2OutA    = false;
+  AppData.IO.bit.P2OutP    = false;
+  // MAIN
+  AppData.IO.bit.P2SacA1   = false;
+  AppData.IO.bit.P2SacA2   = false;
+  AppData.IO.bit.P2SacP1   = false;
+  AppData.IO.bit.P2SacP2   = false;
+  AppData.IO.bit.P2SacP3   = false;  
+}
+
 #define SCAN_TIME       2       // 2ms
 U32 PumpCycleTime = 0;
 U32 PumpTick = 0;
@@ -174,18 +398,7 @@ void PumpCycle(void)
                 }
             }
             
-            // IN
-            AppData.IO.bit.P1InA     = true;
-            AppData.IO.bit.P1InP     = true;
-            // OUT
-            AppData.IO.bit.P1OutA    = false;
-            AppData.IO.bit.P1OutP    = true;
-            // MAIN
-            AppData.IO.bit.P1SacA1   = false;
-            AppData.IO.bit.P1SacA2   = false;
-            AppData.IO.bit.P1SacP1   = false;
-            AppData.IO.bit.P1SacP2   = false;
-            AppData.IO.bit.P1SacP3   = false;
+            P1_Step1();
 
             if(Sys.Delay >= 5)      // scan time = 2ms * 5cnt = 10ms
             {
@@ -201,18 +414,7 @@ void PumpCycle(void)
         {
             Sys.Delay++;
 
-            // IN
-            AppData.IO.bit.P1InA     = true;
-            AppData.IO.bit.P1InP     = true;
-            // OUT
-            AppData.IO.bit.P1OutA    = false;
-            AppData.IO.bit.P1OutP    = true;
-            // MAIN
-            AppData.IO.bit.P1SacA1   = true;
-            AppData.IO.bit.P1SacA2   = true;
-            AppData.IO.bit.P1SacP1   = true;
-            AppData.IO.bit.P1SacP2   = true;
-            AppData.IO.bit.P1SacP3   = true;
+            P1_Step2();
           
             U16 EjectTime = (U16)(SetParam.val.ejection / (SCAN_TIME * 10));   // eeprom에 x10 정수형으로 저장되어있음.,
             if(Sys.Delay >= EjectTime)
@@ -227,18 +429,7 @@ void PumpCycle(void)
         {
             Sys.Delay++;
 
-            // IN
-            AppData.IO.bit.P1InA     = true;
-            AppData.IO.bit.P1InP     = true;
-            // OUT
-            AppData.IO.bit.P1OutA    = false;
-            AppData.IO.bit.P1OutP    = true;
-            // MAIN
-            AppData.IO.bit.P1SacA1   = false;
-            AppData.IO.bit.P1SacA2   = false;
-            AppData.IO.bit.P1SacP1   = true;
-            AppData.IO.bit.P1SacP2   = true;
-            AppData.IO.bit.P1SacP3   = true;
+            P1_Step3();
 
             U16 DelayTime = (U16)(SetParam.val.delay / (SCAN_TIME * 10));       // eeprom에 x10 정수형으로 저장되어있음.,
             if(Sys.Delay >= DelayTime)
@@ -253,18 +444,7 @@ void PumpCycle(void)
         {
             Sys.Delay++;
 
-            // IN
-            AppData.IO.bit.P1InA     = false;
-            AppData.IO.bit.P1InP     = true;
-            // OUT
-            AppData.IO.bit.P1OutA    = false;
-            AppData.IO.bit.P1OutP    = false;
-            // MAIN
-            AppData.IO.bit.P1SacA1   = false;
-            AppData.IO.bit.P1SacA2   = false;
-            AppData.IO.bit.P1SacP1   = true;
-            AppData.IO.bit.P1SacP2   = true;
-            AppData.IO.bit.P1SacP3   = true;
+            P1_Step4();
 
             if(Sys.Delay >= 5)     // hold for 10ms
             {
@@ -278,18 +458,7 @@ void PumpCycle(void)
         {
             Sys.Delay++;
 
-            // IN
-            AppData.IO.bit.P1InA     = false;
-            AppData.IO.bit.P1InP     = true;
-            // OUT
-            AppData.IO.bit.P1OutA    = true;
-            AppData.IO.bit.P1OutP    = false;
-            // MAIN
-            AppData.IO.bit.P1SacA1   = false;
-            AppData.IO.bit.P1SacA2   = false;
-            AppData.IO.bit.P1SacP1   = true;
-            AppData.IO.bit.P1SacP2   = true;
-            AppData.IO.bit.P1SacP3   = true;
+            P1_Step5();
 
             if(Sys.Delay >= 5)     // hold for 10ms
             {
@@ -303,18 +472,7 @@ void PumpCycle(void)
         {
             Sys.Delay++;
 
-            // IN
-            AppData.IO.bit.P1InA     = false;
-            AppData.IO.bit.P1InP     = true;
-            // OUT
-            AppData.IO.bit.P1OutA    = true;
-            AppData.IO.bit.P1OutP    = false;
-            // MAIN
-            AppData.IO.bit.P1SacA1   = false;
-            AppData.IO.bit.P1SacA2   = false;
-            AppData.IO.bit.P1SacP1   = false;
-            AppData.IO.bit.P1SacP2   = false;
-            AppData.IO.bit.P1SacP3   = false;
+            P1_Step6();
 
             if(Sys.Delay >= 15)     // hold for 30ms
             {
@@ -328,18 +486,7 @@ void PumpCycle(void)
         {
             Sys.Delay++;
 
-            // IN
-            AppData.IO.bit.P1InA     = false;
-            AppData.IO.bit.P1InP     = false;
-            // OUT
-            AppData.IO.bit.P1OutA    = false;
-            AppData.IO.bit.P1OutP    = false;
-            // MAIN
-            AppData.IO.bit.P1SacA1   = false;
-            AppData.IO.bit.P1SacA2   = false;
-            AppData.IO.bit.P1SacP1   = false;
-            AppData.IO.bit.P1SacP2   = false;
-            AppData.IO.bit.P1SacP3   = false;
+            P1_Step7();
 
             U16 EjectTime = (U16)(SetParam.val.ejection / 10);
             U16 DelayTime = (U16)(SetParam.val.delay / 10);
@@ -363,18 +510,7 @@ void PumpCycle(void)
         {
             Sys.Delay++;
 
-            // IN
-            AppData.IO.bit.P2InA     = true;
-            AppData.IO.bit.P2InP     = true;
-            // OUT
-            AppData.IO.bit.P2OutA    = false;
-            AppData.IO.bit.P2OutP    = true;
-            // MAIN
-            AppData.IO.bit.P2SacA1   = false;
-            AppData.IO.bit.P2SacA2   = false;
-            AppData.IO.bit.P2SacP1   = false;
-            AppData.IO.bit.P2SacP2   = false;
-            AppData.IO.bit.P2SacP3   = false;
+            P2_Step1();
 
             if(Sys.Delay >= 5)      // scan time = 2ms * 5cnt = 10ms
             {
@@ -388,18 +524,7 @@ void PumpCycle(void)
         {
             Sys.Delay++;
 
-             // IN
-            AppData.IO.bit.P2InA     = true;
-            AppData.IO.bit.P2InP     = true;
-            // OUT
-            AppData.IO.bit.P2OutA    = false;
-            AppData.IO.bit.P2OutP    = true;
-            // MAIN
-            AppData.IO.bit.P2SacA1   = true;
-            AppData.IO.bit.P2SacA2   = true;
-            AppData.IO.bit.P2SacP1   = true;
-            AppData.IO.bit.P2SacP2   = true;
-            AppData.IO.bit.P2SacP3   = true;   
+            P2_Step2(); 
 
             U16 EjectTime = (U16)(SetParam.val.ejection / (SCAN_TIME * 10));   // eeprom에 x10 정수형으로 저장되어있음.,
             if(Sys.Delay >= EjectTime)
@@ -414,18 +539,7 @@ void PumpCycle(void)
         {
             Sys.Delay++;
 
-            // IN
-            AppData.IO.bit.P2InA     = true;
-            AppData.IO.bit.P2InP     = true;
-            // OUT
-            AppData.IO.bit.P2OutA    = false;
-            AppData.IO.bit.P2OutP    = true;
-            // MAIN
-            AppData.IO.bit.P2SacA1   = false;
-            AppData.IO.bit.P2SacA2   = false;
-            AppData.IO.bit.P2SacP1   = true;
-            AppData.IO.bit.P2SacP2   = true;
-            AppData.IO.bit.P2SacP3   = true;                   
+            P2_Step3();                 
 
             U16 DelayTime = (U16)(SetParam.val.delay / (SCAN_TIME * 10));       // eeprom에 x10 정수형으로 저장되어있음.,
             if(Sys.Delay >= DelayTime)    
@@ -440,18 +554,7 @@ void PumpCycle(void)
         {
             Sys.Delay++;
 
-            // IN
-            AppData.IO.bit.P2InA      = false;
-            AppData.IO.bit.P2InP      = true;
-            // OUT
-            AppData.IO.bit.P2OutA     = false;
-            AppData.IO.bit.P2OutP     = false;
-            // MAIN
-            AppData.IO.bit.P2SacA1    = false;
-            AppData.IO.bit.P2SacA2    = false;
-            AppData.IO.bit.P2SacP1    = true;
-            AppData.IO.bit.P2SacP2    = true;
-            AppData.IO.bit.P2SacP3    = true;             
+            P2_Step4();         
 
             if(Sys.Delay >= 5)     // hold for 10ms
             {
@@ -465,18 +568,7 @@ void PumpCycle(void)
         {
             Sys.Delay++;
             
-             // IN
-            AppData.IO.bit.P2InA     = false;
-            AppData.IO.bit.P2InP     = true;
-            // OUT
-            AppData.IO.bit.P2OutA    = true;
-            AppData.IO.bit.P2OutP    = false;
-            // MAIN
-            AppData.IO.bit.P2SacA1   = false;
-            AppData.IO.bit.P2SacA2   = false;
-            AppData.IO.bit.P2SacP1   = true;
-            AppData.IO.bit.P2SacP2   = true;
-            AppData.IO.bit.P2SacP3   = true;             
+            P2_Step5();         
 
             if(Sys.Delay >= 5)     // hold for 10ms
             {
@@ -491,18 +583,7 @@ void PumpCycle(void)
         {
             Sys.Delay++;
 
-             // IN
-            AppData.IO.bit.P2InA     = false;
-            AppData.IO.bit.P2InP     = true;
-            // OUT
-            AppData.IO.bit.P2OutA    = true;
-            AppData.IO.bit.P2OutP    = false;
-            // MAIN
-            AppData.IO.bit.P2SacA1   = false;
-            AppData.IO.bit.P2SacA2   = false;
-            AppData.IO.bit.P2SacP1   = false;
-            AppData.IO.bit.P2SacP2   = false;
-            AppData.IO.bit.P2SacP3   = false;             
+            P2_Step6();        
 
             if(Sys.Delay >= 15)     // hold for 30ms
             {
@@ -516,18 +597,7 @@ void PumpCycle(void)
         {
             Sys.Delay++;
 
-            // IN
-            AppData.IO.bit.P2InA     = false;
-            AppData.IO.bit.P2InP     = false;
-            // OUT         
-            AppData.IO.bit.P2OutA    = false;
-            AppData.IO.bit.P2OutP    = false;
-            // MAIN        
-            AppData.IO.bit.P2SacA1   = false;
-            AppData.IO.bit.P2SacA2   = false;
-            AppData.IO.bit.P2SacP1   = false;
-            AppData.IO.bit.P2SacP2   = false;
-            AppData.IO.bit.P2SacP3   = false;
+            P2_Step7();
           
             U16 EjectTime = (U16)(SetParam.val.ejection / 10);
             U16 DelayTime = (U16)(SetParam.val.delay / 10);
