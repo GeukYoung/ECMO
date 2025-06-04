@@ -371,7 +371,8 @@ void PumpCycle(void)
 {
     Sys.RealBPSTime++;  
     PumpPhase = Sys.CalcBPS / 2;
-
+    // PumpPhase = 1;
+      
     if(Sys.g.bfirststart)
       return;
     
@@ -584,7 +585,8 @@ void PumpCycle(void)
 U16 FirstStartDelay = 0;// Pump Run after 1.5s and then Cycle Run after 0.5s
 void SysAuto(void)
 {
-    if(Sys.g.bfirststart && Sys.Pump1CycState == P1_CYC_STEP1)
+    // if(Sys.g.bfirststart && Sys.Pump1CycState == P1_CYC_STEP1)
+    if(Sys.g.bfirststart)
     {
         FirstStartDelay++;
         if(FirstStartDelay > 750)
