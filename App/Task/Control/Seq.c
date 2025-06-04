@@ -102,7 +102,8 @@ void ReadWrite(void)
 {
     bool bLowBatt = Sys.Err.bit.lowbatt;
     bool bOn = Sys.Err.bit.starton || Sys.Err.bit.bloodflow || Sys.Err.bit.bubble || 
-               Sys.Err.bit.inletpress || Sys.Err.bit.outpress || Sys.Err.bit.emeron;
+               Sys.Err.bit.inletpress || Sys.Err.bit.outpress || Sys.Err.bit.emeron ||
+               Sys.Err.bit.disconnectflow;      // 2024.07.07
 
     if(bLowBatt)        // 5cnt Buz-on every 1min
     {
@@ -123,6 +124,7 @@ void ReadWrite(void)
     }
     else
     {
+      if(nControlTaskState == 3)        // AUTO
         BuzzerOnOff(bOn);          
     } 
     
@@ -212,7 +214,7 @@ void PumpCycle(void)
             AppData.IO.bit.P1SacP2   = true;
             AppData.IO.bit.P1SacP3   = true;
           
-            U16 EjectTime = (U16)(SetParam.val.ejection / (SCAN_TIME * 10));   // eeprom¿¡ x10 Á¤¼öÇüÀ¸·Î ÀúÀåµÇ¾îÀÖÀ½.,
+            U16 EjectTime = (U16)(SetParam.val.ejection / (SCAN_TIME * 10));   // eepromì— x10 ì •ìˆ˜í˜•ìœ¼ë¡œ ì €ìž¥ë˜ì–´ìžˆìŒ.,
             if(Sys.Delay >= EjectTime)
             {
                 Sys.Delay = 0;
@@ -238,7 +240,7 @@ void PumpCycle(void)
             AppData.IO.bit.P1SacP2   = true;
             AppData.IO.bit.P1SacP3   = true;
 
-            U16 DelayTime = (U16)(SetParam.val.delay / (SCAN_TIME * 10));       // eeprom¿¡ x10 Á¤¼öÇüÀ¸·Î ÀúÀåµÇ¾îÀÖÀ½.,
+            U16 DelayTime = (U16)(SetParam.val.delay / (SCAN_TIME * 10));       // eepromì— x10 ì •ìˆ˜í˜•ìœ¼ë¡œ ì €ìž¥ë˜ì–´ìžˆìŒ.,
             if(Sys.Delay >= DelayTime)
             {
                 Sys.Delay = 0;
@@ -399,7 +401,7 @@ void PumpCycle(void)
             AppData.IO.bit.P2SacP2   = true;
             AppData.IO.bit.P2SacP3   = true;   
 
-            U16 EjectTime = (U16)(SetParam.val.ejection / (SCAN_TIME * 10));   // eeprom¿¡ x10 Á¤¼öÇüÀ¸·Î ÀúÀåµÇ¾îÀÖÀ½.,
+            U16 EjectTime = (U16)(SetParam.val.ejection / (SCAN_TIME * 10));   // eepromì— x10 ì •ìˆ˜í˜•ìœ¼ë¡œ ì €ìž¥ë˜ì–´ìžˆìŒ.,
             if(Sys.Delay >= EjectTime)
             {
                 Sys.Delay = 0;
@@ -425,7 +427,7 @@ void PumpCycle(void)
             AppData.IO.bit.P2SacP2   = true;
             AppData.IO.bit.P2SacP3   = true;                   
 
-            U16 DelayTime = (U16)(SetParam.val.delay / (SCAN_TIME * 10));       // eeprom¿¡ x10 Á¤¼öÇüÀ¸·Î ÀúÀåµÇ¾îÀÖÀ½.,
+            U16 DelayTime = (U16)(SetParam.val.delay / (SCAN_TIME * 10));       // eepromì— x10 ì •ìˆ˜í˜•ìœ¼ë¡œ ì €ìž¥ë˜ì–´ìžˆìŒ.,
             if(Sys.Delay >= DelayTime)    
             {
                 Sys.Delay = 0;
@@ -574,12 +576,12 @@ void SysAuto(void)
 
     if(!Sys.g.stop) // pushed start switch
     {
-        //bool bAutoCondition = !Sys.Err.bit.inletpress && !Sys.Err.bit.bloodflow;      // alarm ¹ß»ý½Ã¿¡µµ ±¸µ¿.
+        //bool bAutoCondition = !Sys.Err.bit.inletpress && !Sys.Err.bit.bloodflow;      // alarm ë°œìƒì‹œì—ë„ êµ¬ë™.
         bool bAutoCondition = !Sys.Err.bit.bubble;      // bubblestopalarm = true & bubble detection, system stop.
         if(bAutoCondition)
         {
             U16 SetBPM = (U16)(SetParam.val.bpm / 10);
-            Sys.CalcBPS = (U16)(60000 / SetBPM);            // SetParam¿¡ x 10ÇÏ¿© Á¤¼öÇüÀ¸·Î eeprom¿¡ ÀúÀåµÇ¾ùÀ½.
+            Sys.CalcBPS = (U16)(60000 / SetBPM);            // SetParamì— x 10í•˜ì—¬ ì •ìˆ˜í˜•ìœ¼ë¡œ eepromì— ì €ìž¥ë˜ì—‡ìŒ.
             
             if(!Sys.g.cyclerun)
             {
@@ -631,13 +633,90 @@ void SysAuto(void)
     }
 }
 
+// Start Button On [2024.06.19]
+void Start(void)
+{
+  switch(Sys.StartCycState)
+  {
+    case SW_C_START:
+      if(!Start_On())
+        break;
+      Sys.StartTimerCnt = 0;
+      if(Sys.g.emer || Sys.Err.bit.starton)
+        break;
+      if(Sys.g.autorun)
+        break;
+      Sys.g.stop = false;
+      Sys.StopCycState = SW_C_END;
+      break;
+    
+    case SW_C_END:
+      Sys.StartTimerCnt++;
+      if(Sys.StartTimerCnt > 50)
+        Sys.StopCycState = SW_C_START;
+      break;
+  }
+}
+
+// Stop Button On [2024.06.19]
+void Stop(void)
+{
+  switch(Sys.StopCycState)
+  {
+    case SW_C_START:
+      if(!Stop_On())
+        break;
+      Sys.StopTimerCnt = 0;
+      Sys.g.stop = true;
+      Sys.StopCycState = SW_C_END;
+      break;
+    
+    case SW_C_END:
+      Sys.StopTimerCnt++;
+      if(Sys.StopTimerCnt > 50)
+        Sys.StopCycState = SW_C_START;
+      break;
+  }
+}
+
 void Seq(void)
 {
+    Start();
+    Stop();
+    
+    // monitoring to push button state 
     Sys.g.startswon = Start_On();
+    Sys.g.stopswon  = Stop_On();
+    
     Sys.Err.bit.emeron = Sys.g.emer = Emer_On();
-    Sys.g.stop = !Sys.g.startswon || Sys.g.emer;
+    //Sys.g.stop = !Sys.g.startswon || Sys.g.emer || Sys.Err.bit.starton;
+    
+    // Emergency, Bubble Alarmì‹œ ì •ì§€ : 2024.07.07
+    if(Sys.g.emer|| Sys.Err.bit.bubble)
+      Sys.g.stop = true;
+    
+    
+    if(Sys.Err.bit.starton)
+    {
+      if(!Sys.g.startswon)
+        Sys.Err.bit.starton = false;
+    }
+    
+    if(Global.FlowSenCommCnt > 100)
+      Sys.Err.bit.disconnectflow = true;
+    else
+      Sys.Err.bit.disconnectflow = false;
     
     Sys.g.cyclerun =  (Sys.PumpCycState >= P1_CYC_STEP1) && (Sys.PumpCycState <= ALL_CYC_END);
+
+
+    // Start, Stop button 2024.06.18
+    if(Sys.g.startswon)
+    {
+      if(Sys.g.autorun || Sys.g.cyclerun)
+        Sys.g.startswon = false;
+    }
+    
     
     PumpCycle();        // Pump1,2 Cycle
     
@@ -646,6 +725,7 @@ void Seq(void)
         if (false == Sys.g.autorun) // STOP->RUN 
         {
             Global.TempFlowBufCnt = 0; 
+            Global.FlowSenCommCnt = 0;  // Watchdog of FlowSensor Communication
             Global.bFirstFullTempBuf = false;
             Sys.g.autorun = true;
         }
@@ -654,6 +734,7 @@ void Seq(void)
     {
         if (true == Sys.g.autorun) // RUN->STOP 
             Sys.g.autorun = false;
+        Global.FlowSenCommCnt = 0;  // Watchdog of FlowSensor Communication
     }
     
     SysAuto();
@@ -718,7 +799,7 @@ void CheckError(void)
     {
         // check bubble alarm
         // bubble size   > over 20 * max 9.0mm%
-        // bubble AlarmÇØÁ¦´Â bubbleAlarmStop OptionÀ» ²ø¶§¸¸ °¡´É.
+        // bubble Alarmí•´ì œëŠ” bubbleAlarmStop Optionì„ ëŒë•Œë§Œ ê°€ëŠ¥.
         float BubbleErrorSize = (float)(9 * 0.2);
         if(Sys.g.bubblealarmstop && FlowVal.bubblesize > BubbleErrorSize)
           Sys.Err.bit.bubble = true;
@@ -794,7 +875,7 @@ void BuzzerOnOff(bool bOn)
           AppData.IO.bit.BLED = false;
         }
         else if(Sys.Err.bit.emeron || Sys.Err.bit.inletpress ||
-                Sys.Err.bit.bloodflow || Sys.Err.bit.bubble)
+                Sys.Err.bit.bloodflow || Sys.Err.bit.bubble || Sys.Err.bit.disconnectflow)
         {
           AppData.IO.bit.RLED = true;
           AppData.IO.bit.GLED = false; 
