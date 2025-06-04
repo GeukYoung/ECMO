@@ -370,7 +370,7 @@ U16 PumpPhase = 0;
 void PumpCycle(void)
 {
     Sys.RealBPSTime++;  
-    PumpPhase = Sys.CalcBPS / 2
+    PumpPhase = Sys.CalcBPS / 2;
 
     if(Sys.g.bfirststart)
       return;
@@ -393,7 +393,7 @@ void PumpCycle(void)
       Sys.Pump1CycState = P1_CYC_STEP1;  
     }
 
-    if(Sys.RealBPSTime >= PumpPhase) // Pump2 Cycle Start
+    if(Sys.RealBPSTime == PumpPhase) // Pump2 Cycle Start
     {
       Sys.Pump2CycState = P2_CYC_STEP1;
     }
@@ -604,12 +604,9 @@ void SysAuto(void)
         if(bAutoCondition)
         {
             U16 SetBPM = (U16)(SetParam.val.bpm / 10);
-            Sys.CalcBPS = (U16)(60000 / SetBPM * 2);            // SetParam에 x 10하여 정수형으로 eeprom에 저장되엇음.
-                                              // seq 구조 변경에 의한 x2 추가 by JG
+            Sys.CalcBPS = (U16)(60000 / SetBPM);            // SetParam에 x 10하여 정수형으로 eeprom에 저장되엇음.
             if(!Sys.g.cyclerun)
             {
-                Sys.Pump1CycState = P1_CYC_STEP1;
-
                 SetVentFlow(MAIN_PUMP1, 110);       // max. 11 LPM 
                 SetVentFlow(MAIN_PUMP2, 110);       // max. 11 LPM
                 SetVentFlow(SUB_PUMP, SetParam.val.ventflow);   
@@ -957,9 +954,3 @@ void BattBuzOnOff(bool bOn)
           BattBuzOnCount = 0;
     }
 }
-
-
-
-
-
-
