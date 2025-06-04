@@ -62,6 +62,10 @@ typedef enum {
         
         ALL_CYC_END,
 
+        // Start, Stop Button Step      [2024.06.19]
+        SW_C_START = 1,
+        SW_C_TIMER,
+        SW_C_END,
         
 } CycState;
 
